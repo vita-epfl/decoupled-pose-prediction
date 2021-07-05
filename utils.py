@@ -1,21 +1,33 @@
 import numpy as np
 import torch
 
+from PIL import Image, ImageDraw
 import args_module
-device = args_module.args().device
+from mpl_toolkits.axes_grid1 import ImageGrid
+import matplotlib
+matplotlib.use('Agg')
+import matplotlib.pyplot as plt
+
+
+args = args_module.args()
+device = args.device
+scale  = args.scale
+scalex = args.scalex
+scaley = args.scaley
 
 
 def myVIM(pred, true, mask):
     n_batch, seq_len, l = true.shape
 
-    true = true.view(n_batch, seq_len, 14, 2)
-    pred = pred.view(n_batch, seq_len, 14, 2)
-    true[:,:,:,0] *= 1280 
-    true[:,:,:,1] *= 720 
-    pred[:,:,:,0] *= 1280 
-    pred[:,:,:,1] *= 720 
-    true = true.view(n_batch, seq_len, 28)
-    pred = pred.view(n_batch, seq_len, 28)
+    if(scale):
+        true = true.view(n_batch, seq_len, 14, 2)
+        pred = pred.view(n_batch, seq_len, 14, 2)
+        true[:,:,:,0] *= scalex #1280 
+        true[:,:,:,1] *= scaley #720 
+        pred[:,:,:,0] *= scalex #1280 
+        pred[:,:,:,1] *= scaley #720 
+        true = true.view(n_batch, seq_len, 28)
+        pred = pred.view(n_batch, seq_len, 28)
 
 
     #displacement => (n_batch, seq_len ) 
@@ -24,19 +36,20 @@ def myVIM(pred, true, mask):
     displacement = torch.sqrt(torch.sum( (pred-true)**2*mask,dim=-1)/torch.sum(mask, dim=-1) )
     NANS = torch.isnan(displacement)
     displacement[NANS] = 0
-    vim = torch.sum(displacement)
-    #vim = torch.mean(displacement)
+    #vim = torch.sum(displacement)
+    vim = torch.mean(displacement)
 
     
 
-    true = true.view(n_batch, seq_len, 14, 2)
-    pred = pred.view(n_batch, seq_len, 14, 2)
-    true[:,:,:,0] /= 1280 
-    true[:,:,:,1] /= 720 
-    pred[:,:,:,0] /= 1280 
-    pred[:,:,:,1] /= 720 
-    true = true.view(n_batch, seq_len, 28)
-    pred = pred.view(n_batch, seq_len, 28)
+    if(scale):
+        true = true.view(n_batch, seq_len, 14, 2)
+        pred = pred.view(n_batch, seq_len, 14, 2)
+        true[:,:,:,0] /= scalex #1280 
+        true[:,:,:,1] /= scaley #720 
+        pred[:,:,:,0] /= scalex #1280 
+        pred[:,:,:,1] /= scaley #720 
+        true = true.view(n_batch, seq_len, 28)
+        pred = pred.view(n_batch, seq_len, 28)
 
     return vim
     
@@ -90,15 +103,59 @@ def FDE_c(pred, true):
 def ADE_keypoints(pred, true):
     
     #print(f'pred {pred.device} true {true.device} ' )
-    displacement = torch.sqrt(torch.sum( (pred[:,:,:]-true[:,:,:])**2,dim=-1) )
+    n_batch, seq_len, l = pred.shape
+    if(scale):
+        true = true.view(n_batch, seq_len, l//2, 2)
+        pred = pred.view(n_batch, seq_len, l//2, 2)
+        true[:,:,:,0] *= scalex #1280 
+        true[:,:,:,1] *= scaley #720 
+        pred[:,:,:,0] *= scalex #1280 
+        pred[:,:,:,1] *= scaley #720 
+        true = true.view(n_batch, seq_len, l)
+        pred = pred.view(n_batch, seq_len, l)
+         
+
+    displacement = torch.sqrt(torch.sum( (pred[:,:,:]-true[:,:,:])**2,dim=-1)/ (l//2) )
     
     ade = torch.mean(displacement)
     
+    if(scale):
+        true = true.view(n_batch, seq_len, l//2, 2)
+        pred = pred.view(n_batch, seq_len, l//2, 2)
+        true[:,:,:,0] /= scalex #1280 
+        true[:,:,:,1] /= scaley #720 
+        pred[:,:,:,0] /= scalex #1280 
+        pred[:,:,:,1] /= scaley #720 
+        true = true.view(n_batch, seq_len, l)
+        pred = pred.view(n_batch, seq_len, l)
+
     return ade
 
 def FDE_keypoints(pred, true):
-    displacement = torch.sqrt(torch.sum( (pred[:,-1,:]-true[:,-1,:])**2, dim=-1))
+    n_batch, seq_len, l = true.shape
+
+    if(scale):
+        true = true.view(n_batch, seq_len, l//2, 2)
+        pred = pred.view(n_batch, seq_len, l//2, 2)
+        true[:,:,:,0] *= scalex #1280 
+        true[:,:,:,1] *= scaley #720 
+        pred[:,:,:,0] *= scalex #1280 
+        pred[:,:,:,1] *= scaley #720 
+        true = true.view(n_batch, seq_len, l)
+        pred = pred.view(n_batch, seq_len, l)
+
+    displacement = torch.sqrt(torch.sum( (pred[:,-1,:]-true[:,-1,:])**2, dim=-1) / (l//2))
     fde = torch.mean(displacement)
+
+    if(scale):
+        true = true.view(n_batch, seq_len, l//2, 2)
+        pred = pred.view(n_batch, seq_len, l//2, 2)
+        true[:,:,:,0] /= scalex #1280 
+        true[:,:,:,1] /= scaley #720 
+        pred[:,:,:,0] /= scalex #1280 
+        pred[:,:,:,1] /= scaley #720 
+        true = true.view(n_batch, seq_len, l)
+        pred = pred.view(n_batch, seq_len, l)
 
     return fde
 
@@ -204,15 +261,19 @@ def speed2pos(preds, obs_p):
         
     return pred_pos
 
-def speed2bodypos(preds, obs_p):
+def speed2bodypose(preds, obs_p):
     pred_pos = torch.zeros(preds.shape[0], preds.shape[1], preds.shape[-1]).to(device=device)
     current = obs_p[:,-1,:]
     for i in range(preds.shape[1]):
         pred_pos[:,i,:] = current + preds[:,i,:]
         current = pred_pos[:,i,:]
         
-    pred_pos[:,:,0] = torch.min(pred_pos[:,:,0], torch.ones(pred_pos.shape[0], pred_pos.shape[1], device=device))
-    pred_pos[:,:,1] = torch.min(pred_pos[:,:,1], torch.ones(pred_pos.shape[0], pred_pos.shape[1], device=device))
+    if(scale): 
+       pred_pos[:,:,0] = torch.min(pred_pos[:,:,0], 1.*torch.ones(pred_pos.shape[0], pred_pos.shape[1], device=device))
+       pred_pos[:,:,1] = torch.min(pred_pos[:,:,1], 1.*torch.ones(pred_pos.shape[0], pred_pos.shape[1], device=device))
+    else:
+       pred_pos[:,:,0] = torch.min(pred_pos[:,:,0], scalex*torch.ones(pred_pos.shape[0], pred_pos.shape[1], device=device))
+       pred_pos[:,:,1] = torch.min(pred_pos[:,:,1], scaley*torch.ones(pred_pos.shape[0], pred_pos.shape[1], device=device))
     pred_pos[:,:,0] = torch.max(pred_pos[:,:,0], torch.zeros(pred_pos.shape[0], pred_pos.shape[1], device=device))
     pred_pos[:,:,1] = torch.max(pred_pos[:,:,1], torch.zeros(pred_pos.shape[0], pred_pos.shape[1], device=device))
         
@@ -232,3 +293,97 @@ def drawrect(drawcontext, bb, width=5):
     (x1, y1), (x2, y2) = bb
     points = (x1, y1), (x2, y1), (x2, y2), (x1, y2), (x1, y1)
     drawcontext.line(points, fill="red", width=width)
+
+
+#def plot_joints(img, keypoints, masks, color='red', width=5.):
+#
+#    keypoints = keypoints.reshape(14, 2)
+#    if(scale):
+#        keypoints[:,0] *= scalex #1280.
+#        keypoints[:,1] *= scaley #720.
+#
+#
+#    for i, (x, y) in enumerate(keypoints.reshape(14, 2)):
+#       if(masks[i]):
+#           if(i ==0 ):
+#               img.ellipse([(x,y), (x+10,y+10)], fill='blue', outline='blue', width=width)
+#           else:
+#               img.ellipse([(x,y), (x+10,y+10)], fill=color, outline=color, width=width)
+#
+#    if(scale):
+#       keypoints[:,0] /= scalex #1280.
+#       keypoints[:,1] /= scaley #720.
+#    keypoints = keypoints.reshape(28)
+
+def plot_joints(img, keypoints, masks, scale, scalex=1280, scaley=720, color='red', width=10):
+
+    keypoints = keypoints.reshape(14, 2)
+    if(scale):
+        keypoints[:,0] *= scalex 
+        keypoints[:,1] *= scaley 
+
+   # joints = [(0,1),(1,2),(1,3),(2,4),(3,5),(4,6),(5,7),(8,9), \
+   #            (1,8),(1,9),(10,11),(8,10), (9, 11), (10, 12), (11,13)]
+    connections = {0:[1], 1:[2,3,8,9], 2:[4], 4:[6], 3:[5], 5: [7], 8: [9,10], 10: [12], 9:[11], 11:[13]}
+    lines = []
+    for i in connections.keys():
+        for j in connections[i]:
+            if(masks[i] and masks[j]):
+               line = [(keypoints[i][0], keypoints[i][1]), (keypoints[j][0], keypoints[j][1])]
+               lines.append(line)
+
+    for line in lines:
+        img.line(line, fill =color, width = width)
+          
+    if(scale):
+        keypoints[:,0] /= scalex 
+        keypoints[:,1] /= scaley 
+    keypoints = keypoints.reshape(28)
+
+
+def plotter(obs_frames, obs_p, obs_masks, target_frames, preds_p, preds_masks, target_p, target_masks, e, idx, rnd, width=10):
+      obs_scenes = [obs_frames[i][rnd] for i in range(args.input)]
+      fig = plt.figure(figsize=(16,16))
+      grid = ImageGrid(fig, 111,  # similar to subplot(111)
+                       nrows_ncols=(2,2),  # creates 2x2 grid of axes
+                       axes_pad=0.1,  # pad between axes in inch.
+                       )
+      #fig.suptitle('Observed scenes', fontsize=200)
+      for i, ax in enumerate(grid):
+          # Iterating over the grid returns the Axes.
+          with open("/scratch/izar/parsaeif/posetrack/"+obs_scenes[3*i+1],'rb') as f:
+              #print("deb: ", obs_scenes[3*i+1], obs_kp[0][3*i+1].shape)
+              image=Image.open(f)
+              img = ImageDraw.Draw(image)
+              plot_joints(img, obs_p[rnd][3*i+1], obs_masks[rnd][3*i+1], scale, scalex, scaley, color='green', width=width)
+              #plot_keypoints(img, obs_pose[3*i+1], color='green')
+              ax.imshow(image)
+          #ax[i%2][i//2].axis('off')
+      
+      plt.savefig('/scratch/izar/parsaeif/lstm_res_visul/obs_pose_e{:04d}-idx{:04d}-rnd{:04d}.png'.format(e, idx, rnd))
+
+      target_scenes = [target_frames[j][rnd] for j in range(14)]
+      fig = plt.figure(figsize=(16,16))
+      grid = ImageGrid(fig, 111,  # similar to subplot(111)
+                       nrows_ncols=(2,2),  # creates 2x2 grid of axes
+                       axes_pad=0.1,  # pad between axes in inch.
+                       )
+      #fig.suptitle('Observed scenes', fontsize=200)
+      for i, ax in enumerate(grid):
+          # Iterating over the grid returns the Axes.
+          #print(f"deb: {i} {target_scenes[3*i+1]}")
+          #with open("/scratch/izar/parsaeif/posetrack/"+target_scenes[3*i+1],'rb') as f:
+          with open("/scratch/izar/parsaeif/posetrack/"+target_scenes[3*i+1],'rb') as f:
+              #print("deb: ", obs_scenes[3*i+1], obs_kp[0][3*i+1].shape)
+              image=Image.open(f)
+              img = ImageDraw.Draw(image)
+              plot_joints(img, preds_p[rnd][3*i+1], preds_masks[rnd][3*i+1], scale, scalex, scaley, color='red', width=width)
+              plot_joints(img, target_p[rnd][3*i+1], target_masks[rnd][3*i+1], scale, scalex, scaley, color='green', width=width)
+              #plot_keypoints(img, obs_pose[3*i+1], color='green')
+              ax.imshow(image)
+          #ax[i%2][i//2].axis('off')
+
+      plt.savefig('/scratch/izar/parsaeif/lstm_res_visul/predicted_pose_e{:04d}-idx{:04d}-rnd{:04d}.png'.format(e,idx, rnd))
+
+
+

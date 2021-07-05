@@ -9,7 +9,6 @@ import numpy as np
 from PIL import Image, ImageDraw
 import cv2
 import time
-import utils
 import json
 from scipy import interpolate
 
@@ -19,16 +18,17 @@ class myJAAD(torch.utils.data.Dataset):
 
         self.args = args
         #image_size: 1280, 720
-        with open(os.path.join("../somof_data_posetrack","posetrack_"+args.dtype+"_frames_in.json"), 'r') as f:
+        with open(os.path.join("/home/parsaeif/posetrack_challenge/somof_data_posetrack/","posetrack_"+args.dtype+"_frames_in.json"), 'r') as f:
             frames = json.load(f)
         #(306, 16)
-        with open(os.path.join("../somof_data_posetrack","posetrack_"+args.dtype+"_masks_in.json"), 'r') as f:
+        with open(os.path.join("/home/parsaeif/posetrack_challenge/somof_data_posetrack/","posetrack_"+args.dtype+"_masks_in.json"), 'r') as f:
             masks_in = json.load(f)
         masks_in = np.vstack(masks_in)
         #masks_in = np.repeat(masks_in, 2, axis=-1)
+        #self.masks_in = torch.tensor(masks_in, dtype=torch.int8)
         self.masks_in = torch.tensor(masks_in, dtype=torch.float32)
 
-        with open(os.path.join("../somof_data_posetrack","posetrack_"+args.dtype+"_in.json"), 'r') as f:
+        with open(os.path.join("/home/parsaeif/posetrack_challenge/somof_data_posetrack/","posetrack_"+args.dtype+"_in.json"), 'r') as f:
             data_in = json.load(f)
 
         frames_in = []
@@ -36,48 +36,51 @@ class myJAAD(torch.utils.data.Dataset):
            for j in range(len(data_in[i])):
                frames_in.append(frames[i]) 
 
+        #finding future frames from the observed frames
         frames_out = []
         for i in range(len(frames_in)):
-           lst = frames_in[i][-1].split("/")
+           lst = frames_in[i][-1].split("/") 
            image = lst[-1]
            n = int(image.split(".")[0])
+           assert(args.output==14)
+           xx = []
            for ii in range(args.output):
                path = "/".join(lst[:-1]) + "/{:06d}.jpg".format(n+ii+1)
-               frames_out.append(path) 
+               xx.append(path) 
+           frames_out.append(xx)
+        self.frames_in = frames_in 
+        self.frames_out = frames_out 
 
-        self.frames_in = frames_in #torch.tensor(frames_in)
-        self.frames_out = frames_out #torch.tensor(frames_out)
-
-        with open(os.path.join("../somof_data_posetrack","posetrack_"+args.dtype+"_masks_out.json"), 'r') as f:
+        with open(os.path.join("/home/parsaeif/posetrack_challenge/somof_data_posetrack/","posetrack_"+args.dtype+"_masks_out.json"), 'r') as f:
             masks_out = json.load(f)
         masks_out = np.vstack(masks_out)
         #masks_out = np.repeat(masks_out, 2, axis=-1)
         self.masks_out = torch.tensor(masks_out, dtype=torch.float32)
+        #self.masks_out = torch.tensor(masks_out, dtype=torch.int8)
 
 
-        with open(os.path.join("../somof_data_posetrack","posetrack_"+args.dtype+"_out.json"), 'r') as f:
+        with open(os.path.join("/home/parsaeif/posetrack_challenge/somof_data_posetrack/","posetrack_"+args.dtype+"_out.json"), 'r') as f:
             data_out = json.load(f)
 
         data_in = torch.tensor(np.vstack(data_in), dtype=torch.float32)
         data_out = torch.tensor(np.vstack(data_out), dtype=torch.float32)
 
+        self.data_in = data_in
+        self.data_out = data_out
 
+        #scale the poses between 0 and 1
+        if(args.scale):
+            T = self.data_in.shape[1]
+            self.data_in = self.data_in.reshape(-1, T, 14, 2) 
+            self.data_in[:,:,:,0] /= args.scalex #1280.
+            self.data_in[:,:,:,1] /= args.scaley #720. 
+            self.data_in = self.data_in.reshape(-1, T, 28) 
 
-        self.data_in = data_in#*self.masks_in
-        self.data_out = data_out#*self.masks_out
-
-        T = self.data_in.shape[1]
-        self.data_in = self.data_in.reshape(-1, T, 14, 2) 
-        self.data_in[:,:,:,0] /= 1280.
-        self.data_in[:,:,:,1] /= 720. 
-        self.data_in = self.data_in.reshape(-1, T, 28) 
-
-        T = self.data_out.shape[1]
-        self.data_out = self.data_out.reshape(-1, T, 14, 2) 
-        self.data_out[:,:,:,0] /= 1280.
-        self.data_out[:,:,:,1] /= 720.
-        self.data_out = self.data_out.reshape(-1, T, 28) 
-       
+            T = self.data_out.shape[1]
+            self.data_out = self.data_out.reshape(-1, T, 14, 2) 
+            self.data_out[:,:,:,0] /= args.scalex #1280.
+            self.data_out[:,:,:,1] /= args.scaley #720.
+            self.data_out = self.data_out.reshape(-1, T, 28) 
         
 
     def __len__(self):
