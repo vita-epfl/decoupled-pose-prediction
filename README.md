@@ -13,7 +13,7 @@ This is the official code for the paper ["Learning a Disentangled Representation
 ## Contents
 ------------
   * [Repository Structure](#repository-structure)
-  * [Proposed Method](#proposed-method)
+  * [Proposed Method (DiRPoF)](#proposed-method)
   * [Results](#results)
   * [Installation](#installation)
   * [Dataset](#dataset)
