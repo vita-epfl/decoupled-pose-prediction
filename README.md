@@ -100,10 +100,12 @@ where the above options are:
 * batch_size (int): the size of the batch (default: 60)
 * loader_shuffle (bool): if the data should be shuffled (default: True)
 * load_checkpoint (bool): to start from previous saved parameters (default: False)
+
 Test the trained network by running the command:
 ```
-python3.6 test.py
+python3.6 test.py [--hidden_dim hidden_dim --latent_dim latent_dim --embedding_dim embedding_dim --dropout dropout --lr lr --n_epochs n_epochs --batch_size batch_size --loader_shuffle loader_shuffle  --load_checkpoint load_checkpoint ]
 ```
+where the options are similar to the training. 
 
 ## Tested Environments:
 ------------
