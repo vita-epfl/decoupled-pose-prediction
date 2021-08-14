@@ -38,12 +38,20 @@ This is the official code for the paper ["Learning a Disentangled Representation
             
 ## Proposed method
 -------------
-![Our proposed multitask Position-Speed-LSTM (PV-LSTM) architecture](Images/network.PNG)
+![Our proposed method](Images/fig1.png)
+
+![Our proposed network architecture for trajectory prediction](Images/fig2.png)
+
+![Our proposed network architecture for pose prediction](Images/fig3.png)
+
+
 
 
 ## Results
 --------------
-![Example of outputs](Images/visualizations.png)
+![Comparision of our model with other methods](images/tab.png)
+![Example of outputs](Images/fig4-a.png.png)
+![Example of outputs](Images/fig4-b.png.png)
   
 ## Installation:
 ------------
