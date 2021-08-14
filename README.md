@@ -64,6 +64,8 @@ This is the official code for the paper ["Learning a Disentangled Representation
 * Example of outputs
 ![Example of outputs](images/fig4-a.png)
 ![Example of outputs](images/fig4-b.png)
+
+The observed (left) and the predicted (right) poses for two different scenarios in a and b. The rows correspond to theDiRPoF, w/o early stop, w/o Disentanglement, w/o VAE, Disentanglement, Nearest Neighbour, and Zero Velocity baselinesfrom top to bottom. Only the pose of every other frame is shown.
   
 ## Installation:
 ------------
