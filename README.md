@@ -67,45 +67,45 @@ This is the official code for the paper ["Learning a Disentangled Representation
 ------------
 Start by cloning this repositiory:
 ```
-git clone https://github.com/vita-epfl/bounding-box-prediction.git
-cd bounding-box-prediction
+git clone https://github.com/vita-epfl/pose-prediction
+cd pose-prediction
 ```
-Create a new conda environment (Python 3.7):
+Create a new conda environment (Python 3.6):
 ```
-conda create -n pv-lstm python=3.7
-conda activate pv-lstm
+conda create -n DirPoF python=3.6
+conda activate DiRPoF
 ```
 And install the dependencies:
 ```
-pip install -r requirements.txt
+pip3.6 install -r requirements.txt
 ```
 
 ## Dataset:
   
-  * Clone the dataset's [repository](https://github.com/ykotseruba/JAAD).
-  ```
-  git clone https://github.com/ykotseruba/JAAD
-  ```
-  * Run the `prepare_data.py` script, make sure you provide the path to the JAAD repository and the train/val/test ratios (ratios must be in [0,1] and their sum should equal 1.
-  ```
-  python3 prepare_data.py |path/to/JAAD/repo| |train_ratio| |val_ratio| |test_ratio|
-  ```
-  * Download the [JAAD clips](http://data.nvision2.eecs.yorku.ca/JAAD_dataset/) (UNRESIZED) and unzip them in the `videos` folder.
-  * Run the script `split_clips_to_frames.sh` to convert the JAAD videos into frames. Each frame will be placed in a folder under the `scene` folder. Note that this takes 169G of space.
-  
+  * We use the preprocessed dataset of the [SoMoF](https://somof.stanford.edu/dataset) challenge. These datasets for 3dpw and posetrack are available in directories 3dpw/ and posetrack/ respectively. 
   
 ## Training/Testing:
-Open `train.py` and `test.py` and change the parameters in the args class depending on the paths of your files.
-Start training the network by running the command:
+In order to train the model for 3dpw:
 ```
-python3 train.py
+cd 3dpw/
+python3.6 train.py  [--hidden_dim --latent_dim --embedding_dim --dropout --lr --n_epochs --batch_size --loader_shuffle --load_checkpoint  ]
 ```
+where the above options are:
+* hidden_dim (int): hidden state dimension (default: 64)
+* latent_dim (int): the dimension of the latent space (default: 32)
+* embedding_dim (int): the embedding dimension (default: 8)
+* dropout (float): dropout (default: 0.2)
+* lr (float): initial learning rate (default: 0.001)
+* n_epochs (int): the number of epochs (default: 100)
+* batch_size (int): the size of the batch (default: 60)
+* loader_shuffle (bool): if the data should be shuffled (default: True)
+* load_checkpoint (bool): to start from previous saved parameters (default: False)
 Test the trained network by running the command:
 ```
-python3 test.py
+python3.6 test.py
 ```
 
 ## Tested Environments:
 ------------
   * Ubuntu 18.04, CUDA 10.1
-  * Windows 10, CUDA 10.1
+ 
