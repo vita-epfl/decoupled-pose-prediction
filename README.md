@@ -2,10 +2,10 @@
 
 ## _Absract_:
 
-Human pose forecasting, \em{i.e.}, forecasting human body keypoints' locations given a sequence of observed ones, is a challenging task due to the uncertainty in human pose dynamics. 
+Human pose forecasting, *i.e.*, forecasting human body keypoints' locations given a sequence of observed ones, is a challenging task due to the uncertainty in human pose dynamics. 
 Many approaches have been proposed to solve this problem, including Long Short-Term Memories (LSTMs) and Variational AutoEncoders (VAEs). Yet, they do not effectively predict human motions when both global trajectory and local pose movements exist.
 We propose to learn a representation that disentangles the global and local pose forecasting tasks. We also show that it is better to stop the prediction when the uncertainty in human motion increases. 
-Our forecasting model outperforms all existing methods on the pose forecasting benchmark to date by over $20\%$. The code will be made available online.
+Our forecasting model outperforms all existing methods on the pose forecasting benchmark to date by over 20%. The code will be made available online.
 
 ## Introduction:
 This is the official code for the paper ["Learning a Disentangled Representation for Human Pose Forecasting"](link), accepted and published in [ICCV 2021](http://iccv2021.thecvf.com/home)
