@@ -88,7 +88,7 @@ pip3.6 install -r requirements.txt
 In order to train the model for 3dpw:
 ```
 cd 3dpw/
-python3.6 train.py  [--hidden_dim --latent_dim --embedding_dim --dropout --lr --n_epochs --batch_size --loader_shuffle --load_checkpoint  ]
+python3.6 train.py  [--hidden_dim hidden_dim --latent_dim latent_dim --embedding_dim embedding_dim --dropout dropout --lr lr --n_epochs n_epochs --batch_size batch_size --loader_shuffle loader_shuffle  --load_checkpoint load_checkpoint ]
 ```
 where the above options are:
 * hidden_dim (int): hidden state dimension (default: 64)
