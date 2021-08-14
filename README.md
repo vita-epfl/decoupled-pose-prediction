@@ -13,7 +13,7 @@ This is the official code for the paper ["Learning a Disentangled Representation
 ## Contents
 ------------
   * [Repository Structure](#repository-structure)
-  * [Proposed Method (DiRPoF)](#proposed-method)
+  * [Proposed Method](#proposed-method-DiRPoF)
   * [Results](#results)
   * [Installation](#installation)
   * [Dataset](#dataset)
@@ -38,7 +38,7 @@ This is the official code for the paper ["Learning a Disentangled Representation
             ├── model.py                : Script containing the implementation of the network.
             ├── utils.py                : Script containing necessary functions.
             
-## Proposed method (DiRPoF)
+## Proposed method DiRPoF
 -------------
 * Our proposed method:
 ![Our proposed method](images/network.png)
