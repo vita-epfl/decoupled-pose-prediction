@@ -76,7 +76,7 @@ cd pose-prediction
 ```
 Create a new conda environment (Python 3.6):
 ```
-conda create -n DirPoF python=3.6
+conda create -n DiRPoF python=3.6
 conda activate DiRPoF
 ```
 And install the dependencies:
