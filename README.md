@@ -24,7 +24,7 @@ This is the official code for the paper ["Learning a Disentangled Representation
 ------------
     ├── pose-prediction                 : Project repository
           ├── 3dpw 
-            ├── somof_data_3dpw        : Dataset for 3dpw
+            ├── somof_data_3dpw         : Dataset for 3dpw
             ├── train.py                : Script for training.  
             ├── test.py                 : Script for testing.  
             ├── DataLoader.py           : Script for data loader. 
