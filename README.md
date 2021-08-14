@@ -41,11 +41,13 @@ This is the official code for the paper ["Learning a Disentangled Representation
 * Our proposed method:
 ![Our proposed method](images/network.png)
 
+-------------
 
 * Our proposed network architecture for trajectory prediction:
 ![Our proposed network architecture for trajectory prediction](images/fig2.png)
 
 -------------
+
 * Our proposed network architecture for pose prediction:
 ![Our proposed network architecture for pose prediction](images/fig3.png)
 
