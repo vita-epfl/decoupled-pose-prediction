@@ -23,15 +23,15 @@ This is the official code for the paper ["Learning a Disentangled Representation
 ## Repository structure:
 ------------
     ├── pose-prediction                 : Project repository
-          ├── 3dpw 
-            ├── somof_data_3dpw         : Dataset for 3dpw
+        ├── 3dpw 
+            ├── somof_data_3dpw         : Dataset for 3dpw.
             ├── train.py                : Script for training.  
             ├── test.py                 : Script for testing.  
             ├── DataLoader.py           : Script for data loader. 
             ├── model.py                : Script containing the implementation of the network.
             ├── utils.py                : Script containing necessary functions.
-          ├── posetrack
-            ├── somof_data_posetrack    : Dataset for posetrack
+        ├── posetrack
+            ├── somof_data_posetrack    : Dataset for posetrack.
             ├── train.py                : Script for training.  
             ├── test.py                 : Script for testing.  
             ├── DataLoader.py           : Script for data loader. 
