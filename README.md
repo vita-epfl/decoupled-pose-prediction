@@ -56,9 +56,12 @@ This is the official code for the paper ["Learning a Disentangled Representation
 
 ## Results
 --------------
+* Comparision of our model with other methods
 ![Comparision of our model with other methods](images/tab.png)
-![Example of outputs](images/fig4-a.png.png)
-![Example of outputs](images/fig4-b.png.png)
+-------------
+* Example of outputs
+![Example of outputs](images/fig4-a.png)
+![Example of outputs](images/fig4-b.png)
   
 ## Installation:
 ------------
