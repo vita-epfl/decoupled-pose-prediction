@@ -38,7 +38,7 @@ This is the official code for the paper ["Learning a Disentangled Representation
             
 ## Proposed method
 -------------
-![Our proposed method](images/network.pdf)
+![Our proposed method](images/network.png)
 
 ![Our proposed network architecture for trajectory prediction](Images/fig2.png)
 
