@@ -40,7 +40,7 @@ This is the official code for the paper ["Learning a Decoupled Representation fo
             
 ## Proposed method DeRPoF
 -------------
-* Our proposed method:
+We decouple the pose forecasting into a global trajectory forecasting and a local pose forecasting as shown below:
 ![Our proposed method](images/network.png)
 
 -------------
