@@ -55,6 +55,8 @@ This is the official code for the paper ["Learning a Decoupled Representation fo
 
 ## Results
 
+![](images/fig4--a.png)
+![](images/fig4--b.png)
   
 ## Installation:
 ------------
