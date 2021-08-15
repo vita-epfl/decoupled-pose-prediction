@@ -1,9 +1,5 @@
 # Learning a Disentangled Representation for Human Pose Forecasting
 
-```{toggle}
-Some hidden toggle content!
-```
-
 ## _Absract_:
 
 _Human pose forecasting_, *i.e.*, forecasting human body keypoints' locations given a sequence of observed ones, is a challenging task due to the uncertainty in human pose dynamics. 
@@ -58,18 +54,6 @@ This is the official code for the paper ["Learning a Disentangled Representation
 ![Our proposed network architecture for pose prediction](images/fig3.png)
 
 
-
-
-## Results
---------------
-* Comparision of our model with other methods
-![Comparision of our model with other methods](images/tab.png)
--------------
-* Example of outputs
-![Example of outputs](images/fig4-a.png)
-![Example of outputs](images/fig4-b.png)
-
-The observed (left) and the predicted (right) poses for two different scenarios in a and b. The rows correspond to theDiRPoF, w/o early stop, w/o Disentanglement, w/o VAE, Disentanglement, Nearest Neighbour, and Zero Velocity baselinesfrom top to bottom. Only the pose of every other frame is shown.
   
 ## Installation:
 ------------
