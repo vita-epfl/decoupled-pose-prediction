@@ -45,12 +45,12 @@ We decouple the pose forecasting into a global trajectory forecasting and a loca
 
 -------------
 
-* Our proposed network architecture for trajectory prediction:
+* Our LSTM-encoder-decoder network for the global trajectory forecasting:
 ![Our proposed network architecture for trajectory prediction](images/fig2.png)
 
 -------------
 
-* Our proposed network architecture for pose prediction:
+* Our proposed VAE-encoder-decoder network for the local pose forecasting:
 ![Our proposed network architecture for pose prediction](images/fig3.png)
 
 ## Results
