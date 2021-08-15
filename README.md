@@ -1,5 +1,9 @@
 # Learning a Disentangled Representation for Human Pose Forecasting
 
+```{toggle}
+Some hidden toggle content!
+```
+
 ## _Absract_:
 
 _Human pose forecasting_, *i.e.*, forecasting human body keypoints' locations given a sequence of observed ones, is a challenging task due to the uncertainty in human pose dynamics. 
