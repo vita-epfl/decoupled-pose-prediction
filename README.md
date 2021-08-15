@@ -55,7 +55,7 @@ This is the official code for the paper ["Learning a Decoupled Representation fo
 
 ## Results
 
-We show the observed (left) and the predicted (right) poses for two different scenarios. The rows correspond to DeRPoF and w/o Decoupling from top to bottom. Only the pose of every other frame is shown. 
+We show the observed (left) and the predicted (right) poses for two different scenarios. The rows correspond to DeRPoF w/o early stop and w/o Decoupling from top to bottom. Only the pose of every other frame is shown. 
 ![a](images/fig4--a.png)
 ![b](images/fig4--b.png)
 
