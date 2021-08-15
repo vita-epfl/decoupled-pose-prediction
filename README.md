@@ -13,7 +13,7 @@ This is the official code for the paper ["Learning a Decoupled Representation fo
 ## Contents
 ------------
   * [Repository Structure](#repository-structure)
-  * [Proposed Method](#proposed-method-DiRPoF)
+  * [Proposed Method](#proposed-method-DeRPoF)
   * [Results](#results)
   * [Installation](#installation)
   * [Dataset](#dataset)
@@ -38,7 +38,7 @@ This is the official code for the paper ["Learning a Decoupled Representation fo
             ├── model.py                : Script containing the implementation of the network.
             ├── utils.py                : Script containing necessary functions.
             
-## Proposed method DiRPoF
+## Proposed method DeRPoF
 -------------
 * Our proposed method:
 ![Our proposed method](images/network.png)
@@ -64,8 +64,8 @@ cd pose-prediction
 ```
 Create a new conda environment (Python 3.6):
 ```
-conda create -n DiRPoF python=3.6
-conda activate DiRPoF
+conda create -n DeRPoF python=3.6
+conda activate DeRPoF
 ```
 And install the dependencies:
 ```
