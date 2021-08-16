@@ -1,4 +1,4 @@
-# Learning a Decoupled Representation for Human Pose Forecasting
+# Learning Decoupled Representations for Human Pose Forecasting
 
 ## _Absract_:
 
@@ -8,7 +8,7 @@ We propose to learn a representation that decouples the global and local pose fo
 Our forecasting model outperforms all existing methods on the pose forecasting benchmark to date by over 20%. The code will be made available online.
 
 ## Introduction:
-This is the official code for the paper ["Learning a Decoupled Representation for Human Pose Forecasting"](link), accepted and published in ["ICCV 2021 - 1st Workshop, Benchmark and Challenge on Human Trajectory and Pose Dynamics Forecasting in the Wild"](https://somof.stanford.edu/workshops/iccv21)
+This is the official code for the paper ["Learning Decoupled Representation for Human Pose Forecasting"](link), accepted and published in ["ICCV 2021 - 1st Workshop, Benchmark and Challenge on Human Trajectory and Pose Dynamics Forecasting in the Wild"](https://somof.stanford.edu/workshops/iccv21)
 
 ## Contents
 ------------
