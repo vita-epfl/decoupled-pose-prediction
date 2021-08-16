@@ -73,7 +73,7 @@ conda activate DeRPoF
 ```
 And install the dependencies:
 ```
-pip3.6 install -r requirements.txt
+pip install -r requirements.txt
 ```
 
 ## Dataset:
