@@ -6,7 +6,7 @@ import json
 class myJAAD(torch.utils.data.Dataset):
     def __init__(self, args):
         print('Loading', args.dtype, 'data ...')
-        full_path = "/home/behnam/paper-submission/somof_data_posetrack/"
+        full_path = "./somof_data_posetrack/"
 
         self.args = args
         #image_size: 1280, 720
