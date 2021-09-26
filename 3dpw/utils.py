@@ -25,8 +25,8 @@ def FDE_c(pred, true):
     fde = torch.sum(displacement)
     return fde
 
-def speed2pos(preds, obs_p):
-    dev = 'cuda' if torch.cuda.is_available() else 'cpu'
+def speed2pos(preds, obs_p, dev=None):
+    #dev = 'cuda' if torch.cuda.is_available() else 'cpu'
      
     seq_len, batch, l = preds.shape
     pred_pos = torch.zeros(seq_len, batch, l).to(dev)
@@ -40,8 +40,8 @@ def speed2pos(preds, obs_p):
 def visualize(path, seq_in, seq_out, seq_pred):
 
     viewer = viz.Seq3DPose(window=1.0)
-    viewer.center(seq_in[..., 4:6, 0].mean(), seq_in[..., 4:6, 1].mean(), seq_in[..., 4:6, 2].mean())
-    viewer.view(seq_in, 'Input', prefix=path)
-    viewer.view(seq_pred, 'Prediction', prefix=path)
-    viewer.view(seq_out, 'GroundTruth', prefix=path)
+    viewer.center(seq_in.cpu()[..., 4:6, 0].mean(), seq_in.cpu()[..., 4:6, 1].mean(), seq_in.cpu()[..., 4:6, 2].mean())
+    viewer.view(seq_in.cpu(), 'Input', prefix=path)
+    viewer.view(seq_pred.cpu(), 'Prediction', prefix=path)
+    viewer.view(seq_out.cpu(), 'GroundTruth', prefix=path)
 

@@ -12,7 +12,8 @@ import DataLoader
 def main(args):
 
     ######################loading data#######################
-    dev = 'cuda' if torch.cuda.is_available() else 'cpu'
+    #dev = 'cuda' if torch.cuda.is_available() else 'cpu'
+    dev = args.dev
     args.dtype = "train"
     train = DataLoader.data_loader(args)
     args.dtype = 'valid'
@@ -76,7 +77,7 @@ def main(args):
 
             ###########################################################
             speed_preds = (speed_preds_g.view(14, batch, 1, 3) + output.view(14, batch, 13, 3)).view(14, batch, 39)
-            preds_p = utils.speed2pos(speed_preds, obs_p) 
+            preds_p = utils.speed2pos(speed_preds, obs_p, dev=dev) 
             #####################total loss############################
             loss = loss_g + 0.1*loss_l
             ####################backward and optimize##################
@@ -130,7 +131,7 @@ def main(args):
                 loss = loss_g + 0.1*loss_l
 
                 ##################calculating the predictions#######################
-                preds_p = utils.speed2pos(speed_preds, obs_p) 
+                preds_p = utils.speed2pos(speed_preds, obs_p, dev=dev) 
 
             #####################calculating the metrics########################
             ade_val += float(utils.ADE_c(preds_p, target_p))
@@ -175,6 +176,7 @@ if __name__ == '__main__':
     parser.add_argument('--pin_memory', default=False, type=bool, required=False)
     parser.add_argument('--loader_workers', default=1, type=int, required=False)
     parser.add_argument('--load_checkpoint', default=False, type=bool, required=False)
+    parser.add_argument('--dev', default='cpu', type=str, required=False)
     args = parser.parse_args()
 
     main(args)
