@@ -12,19 +12,17 @@ import DataLoader
 def main(args):
 
     ######################loading data#######################
+    dev = 'cuda' if torch.cuda.is_available() else 'cpu'
     args.dtype = "train"
     train = DataLoader.data_loader(args)
     args.dtype = 'valid'
     val = DataLoader.data_loader(args)
     
     ####################defining model#######################
-    net_g = model.LSTM_g(embedding_dim=args.embedding_dim, h_dim=args.hidden_dim, dropout=args.dropout)
-    encoder = model.Encoder(h_dim=args.hidden_dim, latent_dim=args.latent_dim, dropout=args.dropout)
-    decoder = model.Decoder(h_dim=args.hidden_dim, latent_dim=args.latent_dim, dropout=args.dropout)
-    net_l = model.VAE(Encoder=encoder, Decoder=decoder)
-    if torch.cuda.is_available():
-        net_l.cuda()
-        net_g.cuda()
+    net_g = model.LSTM_g(embedding_dim=args.embedding_dim, h_dim=args.hidden_dim, dropout=args.dropout, dev=dev).to(device=dev)
+    encoder = model.Encoder(h_dim=args.hidden_dim, latent_dim=args.latent_dim, dropout=args.dropout, dev=dev)
+    decoder = model.Decoder(h_dim=args.hidden_dim, latent_dim=args.latent_dim, dropout=args.dropout, dev=dev)
+    net_l = model.VAE(Encoder=encoder, Decoder=decoder).to(device=dev)
     net_l.double()
     net_g.double()
     net_params = list(net_l.parameters()) + list(net_g.parameters())
@@ -55,10 +53,10 @@ def main(args):
     
             batch = obs_p.size(1)
             counter += batch 
-            obs_p = obs_p.to(device='cpu').double()
-            obs_s = obs_s.to(device='cpu').double()
-            target_p = target_p.to(device='cpu').double()
-            target_s = target_s.to(device='cpu').double()
+            obs_p = obs_p.to(device=dev).double()
+            obs_s = obs_s.to(device=dev).double()
+            target_p = target_p.to(device=dev).double()
+            target_s = target_s.to(device=dev).double()
     
             #########splitting the motion into local + global##########
             obs_s_g = 0.5*(obs_s.view(15, batch, 13, 3)[:,:,0] + obs_s.view(15, batch, 13, 3)[:,:,1])
@@ -108,10 +106,10 @@ def main(args):
     
             batch = obs_p.size(1) 
             counter += batch 
-            obs_p = obs_p.to(device='cpu').double()
-            obs_s = obs_s.to(device='cpu').double()
-            target_p = target_p.to(device='cpu').double()
-            target_s = target_s.to(device='cpu').double()
+            obs_p = obs_p.to(device=dev).double()
+            obs_s = obs_s.to(device=dev).double()
+            target_p = target_p.to(device=dev).double()
+            target_s = target_s.to(device=dev).double()
             
             #########splitting the motion into local + global##########
             obs_s_g = 0.5*(obs_s.view(15, batch, 13, 3)[:,:,0] + obs_s.view(15, batch, 13, 3)[:,:,1])
