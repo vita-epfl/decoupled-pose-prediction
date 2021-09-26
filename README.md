@@ -85,7 +85,7 @@ pip install -r requirements.txt
   
   * We use the preprocessed dataset of the [SoMoF](https://somof.stanford.edu/dataset) challenge. For easy usage, these datasets for 3dpw and posetrack are available in directories 3dpw/ and posetrack/ respectively. 
   
-## Training/Testing:
+## Training/Validating/Testing:
 In order to train the model for 3dpw:
 ```
 cd 3dpw/
@@ -102,6 +102,13 @@ where the above options are:
 * loader_shuffle (bool): if the data should be shuffled (default: True)
 * load_checkpoint (bool): to start from previous saved parameters (default: False)
 * dev: device either 'cpu' or 'cuda', default is 'cpu'
+
+For validating the model run the command:
+```
+python val.py [--hidden_dim hidden_dim --latent_dim latent_dim --embedding_dim embedding_dim --dropout dropout --dev dev]
+```
+The output will be the vim and vam values as well as some visualizations in the visualization folder.
+
 
 Test the trained network by running the command:
 ```
