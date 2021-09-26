@@ -51,18 +51,18 @@ We decouple the pose forecasting into a global trajectory forecasting and a loca
 -------------
 
 * Our LSTM-encoder-decoder network for the global trajectory forecasting:
-![Our proposed network architecture for trajectory prediction](images/fig2.png)
+![Our proposed network architecture for trajectory prediction](figures/fig2.png)
 
 -------------
 
 * Our proposed VAE-encoder-decoder network for the local pose forecasting:
-![Our proposed network architecture for pose prediction](images/fig3.png)
+![Our proposed network architecture for pose prediction](figures/fig3.png)
 
 ## Results
 
 We show the observed (left) and the predicted (right) poses for two different scenarios. The rows correspond to DeRPoF w/o early stop and w/o Decoupling from top to bottom. Only the pose of every other frame is shown. 
-![a](images/fig4--a.png)
-![b](images/fig4--b.png)
+![a](figures/fig4--a.png)
+![b](figures/fig4--b.png)
 
 ## Installation:
 ------------
