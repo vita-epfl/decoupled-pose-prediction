@@ -85,11 +85,6 @@ if __name__ == '__main__':
     parser.add_argument('--embedding_dim', default=8, type=int, required=False)
     parser.add_argument('--pose_dim', default=28, type=int, required=False)
     parser.add_argument('--dropout', default=0.2, type=float, required=False)
-    parser.add_argument('--batch_size', default=60, type=int, required=False)
-    parser.add_argument('--loader_shuffle', default=True, type=bool, required=False)
-    parser.add_argument('--pin_memory', default=False, type=bool, required=False)
-    parser.add_argument('--loader_workers', default=1, type=int, required=False)
-    parser.add_argument('--load_checkpoint', default=False, type=bool, required=False)
     args = parser.parse_args()
 
     main(args)
