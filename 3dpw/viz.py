@@ -101,7 +101,7 @@ class Seq3DPose(object):
     def __init__(self, window=1.0):
         self.fig = plt.figure(figsize=(6, 6))
         ax = plt.axes(projection='3d')
-        ax.set_axis_off() 
+        #ax.set_axis_off() 
         self.ob = Ax3DPose(ax, window)
 
     def center(self, xc, yc, zc):
