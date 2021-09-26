@@ -10,7 +10,8 @@ import argparse
 def main(args):
 
     ######################loading data#######################
-    dev = 'cuda' if torch.cuda.is_available() else 'cpu'
+    dev = args.dev
+    #dev = 'cuda' if torch.cuda.is_available() else 'cpu'
     import DataLoader
     args.dtype = 'valid'
     val = DataLoader.data_loader(args)
@@ -69,7 +70,7 @@ def main(args):
             loss = loss_g + 0.1*loss_l
 
             ##################calculating the predictions#######################
-            preds_p = utils.speed2pos(speed_preds, obs_p) 
+            preds_p = utils.speed2pos(speed_preds, obs_p, dev=dev) 
 
         #####################calculating the metrics########################
         ade_val += float(utils.ADE_c(preds_p, target_p))
@@ -109,6 +110,7 @@ if __name__ == '__main__':
     parser.add_argument('--loader_shuffle', default=False, type=bool, required=False)
     parser.add_argument('--pin_memory', default=False, type=bool, required=False)
     parser.add_argument('--loader_workers', default=1, type=int, required=False)
+    parser.add_argument('--dev', default='cpu', type=str, required=False)
     args = parser.parse_args()
 
     main(args)

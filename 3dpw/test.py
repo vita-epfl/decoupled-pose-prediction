@@ -11,7 +11,8 @@ import json
 def main(args):
 
     ######################loading data#######################
-    dev = 'cuda' if torch.cuda.is_available() else 'cpu'
+    dev = args.dev 
+    #dev = 'cuda' if torch.cuda.is_available() else 'cpu'
     import DataLoader_test
     val = DataLoader_test.data_loader()
     
@@ -48,7 +49,7 @@ def main(args):
             ###########################################################
             speed_preds = (speed_preds_g.view(14, batch, 1, 3) + output.view(14, batch, 13, 3)).view(14, batch, 39)
             ##################calculating the predictions#######################
-            preds_p = utils.speed2pos(speed_preds, obs_p) 
+            preds_p = utils.speed2pos(speed_preds, obs_p, dev=dev) 
 
             alist = []
             for _, (start, end) in enumerate(start_end_idx):
@@ -67,6 +68,7 @@ if __name__ == '__main__':
     parser.add_argument('--latent_dim', default=32, type=int, required=False)
     parser.add_argument('--embedding_dim', default=8, type=int, required=False)
     parser.add_argument('--dropout', default=0., type=float, required=False)
+    parser.add_argument('--dev', default='cpu', type=str, required=False)
     args = parser.parse_args()
 
     main(args)
