@@ -8,7 +8,7 @@ We propose to learn a representation that decouples the global and local pose fo
 Our forecasting model outperforms all existing methods on the pose forecasting benchmark to date by over 20%. The code will be made available online.
 
 ## Introduction:
-This is the official code for the paper ["Learning Decoupled Representation for Human Pose Forecasting"](link), accepted and published in ["ICCV workshop 2021"](https://somof.stanford.edu/workshops/iccv21)
+This is the official code for the paper ["Learning Decoupled Representation for Human Pose Forecasting"](link), accepted and published in ["ICCVW 2021"](https://somof.stanford.edu/workshops/iccv21)
 
 ## Contents
 ------------
@@ -78,7 +78,7 @@ pip install -r requirements.txt
 
 ## Dataset:
   
-  * We use the preprocessed dataset of the [SoMoF](https://somof.stanford.edu/dataset) challenge. These datasets for 3dpw and posetrack are available in directories 3dpw/ and posetrack/ respectively. 
+  * We use the preprocessed dataset of the [SoMoF](https://somof.stanford.edu/dataset) challenge. For easy usage, these datasets for 3dpw and posetrack are available in directories 3dpw/ and posetrack/ respectively. 
   
 ## Training/Testing:
 In order to train the model for 3dpw:
