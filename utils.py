@@ -1,8 +1,9 @@
-import torch 
+import torch
+torch.manual_seed(0) 
 import numpy as np
 from PIL import Image, ImageDraw
 import os
-#import viz
+
 JOINTS = [
     (0, 1),  # head_top -> head_center
     (1, 2),  # head_center -> neck
@@ -26,7 +27,7 @@ JOINTS = [
     (19, 20),  # left_hip -> left_knee
     (20, 21)  # left_knee -> left_ankle
 ]
-PATH = "/scratch/izar/parsaeif/JTA_viz1"
+PATH = "/scratch/izar/saeedsa/pose-prediction/JTA_viz1"
 WIDTH = 2
 
 def visu(obs_p, obs_m, obs_f, pred, true, masks, scenes, seq_start_end, prefix, epoch, idx):

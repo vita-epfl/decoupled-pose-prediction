@@ -1,5 +1,4 @@
 #!/bin/bash
-#SBATCH --chdir ./
 #SBATCH --nodes 1
 #SBATCH --ntasks 1
 #SBATCH --cpus-per-task 20
@@ -7,16 +6,13 @@
 #SBATCH --time 03:00:00
 #SBATCH --account vita
 #SBATCH --gres gpu:1
-#SBATCH --output slurmout
-##SBATCH --output slurm_lstm_bodyposes_test
+#SBATCH --output jta_long
 
-#source ../venv/bin/activate
+module load gcc python py-torchvision py-torch
+source ../venv*/bin/activate
  
 echo STARTING AT `date`
 
-CUDA_VISIBLE_DEVICES=0 
-srun python train.py
-#srun python3 test.py
-
+CUDA_VISIBLE_DEVICES=0 python train.py
 
 echo FINISHED at `date`

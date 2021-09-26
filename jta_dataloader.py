@@ -4,10 +4,11 @@ from ast import literal_eval
 import time
 import os
 import numpy as np
-
+import pdb
 
 #PATH = "/work/vita/JTA_csvs/JTA/2D" 
-PATH = "/home/parsaeif/posepred/preprocessed_data/JTA_interactive/2D"
+#PATH = "/home/parsaeif/posepred/preprocessed_data/JTA_interactive/2D"
+PATH = "."
 class JTA_DataLoader(torch.utils.data.Dataset):
     def __init__(self, args):
         self.args = args
@@ -76,12 +77,12 @@ def my_collate(batch):
        for j in range(_len[i]):
           obs_ff.append(obs_f[i])
           target_ff.append(target_f[i])
-    obs_p = torch.cat(obs_p, dim=0).permute(1,0,2)
-    obs_s = torch.cat(obs_s, dim=0).permute(1,0,2)
-    obs_m = torch.cat(obs_m, dim=0).permute(1,0,2)
-    target_p = torch.cat(target_p, dim=0).permute(1,0,2)
-    target_s = torch.cat(target_s, dim=0).permute(1,0,2)
-    target_m = torch.cat(target_m, dim=0).permute(1,0,2)
+    obs_p = torch.cat(obs_p,dim=0).permute(1,0,2)
+    obs_s = torch.cat(obs_s,dim=0).permute(1,0,2)
+    obs_m = torch.cat(obs_m,dim=0).permute(1,0,2)
+    target_p = torch.cat(target_p,dim=0).permute(1,0,2)
+    target_s = torch.cat(target_s,dim=0).permute(1,0,2)
+    target_m = torch.cat(target_m,dim=0).permute(1,0,2)
     seq_start_end = torch.LongTensor(seq_start_end)
     out = [obs_p, obs_s, obs_ff, obs_m, target_p, target_s, target_ff, target_m, seq_start_end]
     return tuple(out)
@@ -90,7 +91,8 @@ def my_collate(batch):
 
 def data_loader_JTA(args):
     dataset = JTA_DataLoader(args)
-  
+    print(args.dtype, len(dataset))
+
     if(args.dtype == 'validation' or args.dtype == 'test'):
         dataloader = torch.utils.data.DataLoader(
             dataset, batch_size=dataset.__len__(), shuffle=False,

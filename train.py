@@ -8,6 +8,7 @@ import time
 import argparse
 import model 
 import jta_dataloader
+import pdb
 
 LEFT_HIP = 16
 RIGHT_HIP = 19
@@ -20,6 +21,7 @@ def main(args):
     args.dtype = 'validation'
     val = jta_dataloader.data_loader_JTA(args)
     args.dtype = 'val'
+
 
     ####################defining model#######################
     net_g = model.LSTM_g(embedding_dim=args.embedding_dim, D_dim=args.D_dim, h_dim=args.hidden_dim, dropout=args.dropout, pred_len=args.pred_len)
@@ -42,7 +44,7 @@ def main(args):
     loss_fn = nn.MSELoss() 
     bce = nn.BCELoss()
     optimizer = optim.Adam(net_params, lr=args.lr)
-    scheduler = optim.lr_scheduler.ReduceLROnPlateau(optimizer, factor=0.7, patience=5, threshold = 1e-8, verbose=True)
+    scheduler = optim.lr_scheduler.ReduceLROnPlateau(optimizer, factor=0.8, patience=7, threshold = 1e-8, verbose=True)
     
     print('='*100)
     print('Training ...')
@@ -94,7 +96,6 @@ def main(args):
             loss_m = bce(preds_m, target_m)*batch
 
 
-            ###########################################################
             speed_preds = (speed_preds_g.view(args.pred_len, batch, 1, args.D_dim) + output.view(args.pred_len, batch, args.pose_dim//args.D_dim, args.D_dim)).view(args.pred_len, batch, args.pose_dim)
             preds_p = utils.speed2pos(speed_preds, obs_p) 
             #####################total loss############################
@@ -115,7 +116,6 @@ def main(args):
         fde_train  /= counter    
         vim_train  /= counter    
         acc_train /= counter
-        scheduler.step(loss_train)
      
         ade_val  = 0
         fde_val  = 0
@@ -180,6 +180,7 @@ def main(args):
         fde_val  /= counter    
         vim_val  /= counter    
         acc_val /= counter
+        scheduler.step(loss_val)
     
         print("e: %d "%epoch,
               "|loss_t: %0.4f "%loss_train,
@@ -212,11 +213,11 @@ if __name__ == '__main__':
     parser.add_argument('--stride', default=5, type=int, required=False)
     parser.add_argument('--hidden_dim', default=64, type=int, required=False)
     parser.add_argument('--latent_dim', default=32, type=int, required=False)
-    parser.add_argument('--embedding_dim', default=8, type=int, required=False)
-    parser.add_argument('--dropout', default=0.2, type=float, required=False)
-    parser.add_argument('--lr', default=0.001, type=float, required=False)
+    parser.add_argument('--embedding_dim', default=16, type=int, required=False)
+    parser.add_argument('--dropout', default=0.1, type=float, required=False)
+    parser.add_argument('--lr', default=0.01, type=float, required=False)
     parser.add_argument('--n_epochs', default=1000, type=int, required=False)
-    parser.add_argument('--batch_size', default=200, type=int, required=False)
+    parser.add_argument('--batch_size', default=64, type=int, required=False)
     parser.add_argument('--loader_shuffle', default=True, type=bool, required=False)
     parser.add_argument('--pin_memory', default=False, type=bool, required=False)
     parser.add_argument('--loader_workers', default=1, type=int, required=False)

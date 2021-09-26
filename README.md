@@ -8,7 +8,7 @@ We propose to learn a representation that decouples the global and local pose fo
 Our forecasting model outperforms all existing methods on the pose forecasting benchmark to date by over 20%. The code will be made available online.
 
 ## Introduction:
-This is the official code for the paper ["Learning Decoupled Representation for Human Pose Forecasting"](link), accepted and published in ["ICCV 2021 - 1st Workshop, Benchmark and Challenge on Human Trajectory and Pose Dynamics Forecasting in the Wild"](https://somof.stanford.edu/workshops/iccv21)
+This is the official code for the paper ["Learning Decoupled Representation for Human Pose Forecasting"](link), accepted and published in ["ICCVW 2021"](https://somof.stanford.edu/workshops/iccv21)
 
 ## Contents
 ------------
@@ -26,15 +26,20 @@ This is the official code for the paper ["Learning Decoupled Representation for 
         ├── 3dpw 
             ├── somof_data_3dpw         : Dataset for 3dpw.
             ├── train.py                : Script for training.  
-            ├── test.py                 : Script for testing.  
-            ├── DataLoader.py           : Script for data loader. 
+            ├── valid.py                : Script for validating on validation set.
+            ├── test.py                 : Script for testing on test set.  
+            ├── DataLoader.py           : Script for data loader for train and validation datasets. 
+            ├── DataLoader_test.py      : Script for data loader for test set.
             ├── model.py                : Script containing the implementation of the network.
             ├── utils.py                : Script containing necessary functions.
+            ├── viz.py                  : Script for visualization.
         ├── posetrack
             ├── somof_data_posetrack    : Dataset for posetrack.
             ├── train.py                : Script for training.  
+            ├── valid.py                : Script for validating on validation set.
             ├── test.py                 : Script for testing.  
-            ├── DataLoader.py           : Script for data loader. 
+            ├── DataLoader.py           : Script for data loader for train and validation datasets. 
+            ├── DataLoader_test.py      : Script for data loader for test set.
             ├── model.py                : Script containing the implementation of the network.
             ├── utils.py                : Script containing necessary functions.
             
@@ -63,13 +68,13 @@ We show the observed (left) and the predicted (right) poses for two different sc
 ------------
 Start by cloning this repositiory:
 ```
-git clone https://github.com/vita-epfl/pose-prediction
-cd pose-prediction
+git clone https://github.com/vita-epfl/decoupled-pose-prediction
+cd decoupled-pose-prediction
 ```
-Create a new conda environment (Python 3.6):
+Create a virtual environment:
 ```
-conda create -n DeRPoF python=3.6
-conda activate DeRPoF
+virtualenv myenv
+source myenv/bin/activate
 ```
 And install the dependencies:
 ```
@@ -78,13 +83,13 @@ pip install -r requirements.txt
 
 ## Dataset:
   
-  * We use the preprocessed dataset of the [SoMoF](https://somof.stanford.edu/dataset) challenge. These datasets for 3dpw and posetrack are available in directories 3dpw/ and posetrack/ respectively. 
+  * We use the preprocessed dataset of the [SoMoF](https://somof.stanford.edu/dataset) challenge. For easy usage, these datasets for 3dpw and posetrack are available in directories 3dpw/ and posetrack/ respectively. 
   
 ## Training/Testing:
 In order to train the model for 3dpw:
 ```
 cd 3dpw/
-python3.6 train.py  [--hidden_dim hidden_dim --latent_dim latent_dim --embedding_dim embedding_dim --dropout dropout --lr lr --n_epochs n_epochs --batch_size batch_size --loader_shuffle loader_shuffle  --load_checkpoint load_checkpoint ]
+python train.py  [--hidden_dim hidden_dim --latent_dim latent_dim --embedding_dim embedding_dim --dropout dropout --lr lr --n_epochs n_epochs --batch_size batch_size --loader_shuffle loader_shuffle  --load_checkpoint load_checkpoint ]
 ```
 where the above options are:
 * hidden_dim (int): hidden state dimension (default: 64)
@@ -99,7 +104,7 @@ where the above options are:
 
 Test the trained network by running the command:
 ```
-python3.6 test.py [--hidden_dim hidden_dim --latent_dim latent_dim --embedding_dim embedding_dim --dropout dropout --lr lr --n_epochs n_epochs --batch_size batch_size --loader_shuffle loader_shuffle  --load_checkpoint load_checkpoint ]
+python test.py [--hidden_dim hidden_dim --latent_dim latent_dim --embedding_dim embedding_dim --dropout dropout]
 ```
 where the options are similar to the training. 
 
