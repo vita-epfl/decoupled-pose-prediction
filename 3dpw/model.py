@@ -79,7 +79,7 @@ class Decoder(nn.Module):
         decoder_c = torch.zeros(self.num_layers, batch, self.h_dim, device='cpu', dtype=torch.float64)
         last_s = obs_s[-1].unsqueeze(0)
         decoder_h = self.FC(latent).unsqueeze(0)
-        decoedr_h = decoder_h.repeat(self.num_layers, 1, 1)
+        decoder_h = decoder_h.repeat(self.num_layers, 1, 1)
         state_tuple = (decoder_h, decoder_c)
 
         preds_s = torch.tensor([], device='cpu')
