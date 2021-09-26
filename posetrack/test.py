@@ -12,7 +12,8 @@ import json
 def main(args):
     
     #############################loading the data#####################################
-    dev = 'cuda' if torch.cuda.is_available() else 'cpu'
+    #dev = 'cuda' if torch.cuda.is_available() else 'cpu'
+    dev = args.dev
     val = DataLoader_test.data_loader()
     ##################################################################################
     
@@ -57,7 +58,7 @@ def main(args):
             output, mean, log_var = net_l(obs_s_l)
             ###########################################################
             speed_preds = (speed_preds_g.view(14, batch, 1, 2) + output.view(14, batch, 14, 2)).view(14, batch, 28)
-            preds_p = utils.speed2pos(speed_preds, obs_p)
+            preds_p = utils.speed2pos(speed_preds, obs_p, dev=dev)
 
             alist_p = []
             alist_m = []
@@ -83,6 +84,7 @@ if __name__ == '__main__':
     parser.add_argument('--embedding_dim', default=8, type=int, required=False)
     parser.add_argument('--pose_dim', default=28, type=int, required=False)
     parser.add_argument('--dropout', default=0.2, type=float, required=False)
+    parser.add_argument('--dev', default="cpu", type=str, required=False)
     args = parser.parse_args()
 
     main(args)
