@@ -26,15 +26,20 @@ This is the official code for the paper ["Learning Decoupled Representation for 
         ├── 3dpw 
             ├── somof_data_3dpw         : Dataset for 3dpw.
             ├── train.py                : Script for training.  
-            ├── test.py                 : Script for testing.  
-            ├── DataLoader.py           : Script for data loader. 
+            ├── valid.py                : Script for validating on validation set.
+            ├── test.py                 : Script for testing on test set.  
+            ├── DataLoader.py           : Script for data loader for train and validation datasets. 
+            ├── DataLoader_test.py      : Script for data loader for test set.
             ├── model.py                : Script containing the implementation of the network.
             ├── utils.py                : Script containing necessary functions.
+            ├── viz.py                  : Script for visualization.
         ├── posetrack
             ├── somof_data_posetrack    : Dataset for posetrack.
             ├── train.py                : Script for training.  
+            ├── valid.py                : Script for validating on validation set.
             ├── test.py                 : Script for testing.  
-            ├── DataLoader.py           : Script for data loader. 
+            ├── DataLoader.py           : Script for data loader for train and validation datasets. 
+            ├── DataLoader_test.py      : Script for data loader for test set.
             ├── model.py                : Script containing the implementation of the network.
             ├── utils.py                : Script containing necessary functions.
             
@@ -99,7 +104,7 @@ where the above options are:
 
 Test the trained network by running the command:
 ```
-python test.py [--hidden_dim hidden_dim --latent_dim latent_dim --embedding_dim embedding_dim --dropout dropout --lr lr --n_epochs n_epochs --batch_size batch_size --loader_shuffle loader_shuffle  --load_checkpoint load_checkpoint ]
+python test.py [--hidden_dim hidden_dim --latent_dim latent_dim --embedding_dim embedding_dim --dropout dropout]
 ```
 where the options are similar to the training. 
 
