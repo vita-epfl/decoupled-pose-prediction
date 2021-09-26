@@ -12,17 +12,15 @@ import json
 def main(args):
     
     #############################loading the data#####################################
+    dev = 'cuda' if torch.cuda.is_available() else 'cpu'
     val = DataLoader_test.data_loader()
     ##################################################################################
     
     ##############################defining the model##################################
-    net_g = model.LSTM_g(embedding_dim=args.embedding_dim, h_dim=args.hidden_dim, dropout=args.dropout)
-    encoder = model.Encoder(pose_dim=args.pose_dim, h_dim=args.hidden_dim, latent_dim=args.latent_dim)
-    decoder = model.Decoder(pose_dim=args.pose_dim, h_dim=args.hidden_dim, latent_dim=args.latent_dim)
-    net_l = model.VAE(Encoder=encoder, Decoder=decoder)
-    if torch.cuda.is_available():
-        net_g.cuda()
-        net_l.cuda()
+    net_g = model.LSTM_g(embedding_dim=args.embedding_dim, h_dim=args.hidden_dim, dropout=args.dropout, dev=dev).to(device=dev)
+    encoder = model.Encoder(pose_dim=args.pose_dim, h_dim=args.hidden_dim, latent_dim=args.latent_dim, dev=dev)
+    decoder = model.Decoder(pose_dim=args.pose_dim, h_dim=args.hidden_dim, latent_dim=args.latent_dim, dev=dev)
+    net_l = model.VAE(Encoder=encoder, Decoder=decoder).to(device=dev)
     net_g.double()
     net_l.double()
 
@@ -39,9 +37,9 @@ def main(args):
     for idx, (obs_p, obs_s, obs_f, obs_m, target_f, start_end_idx) in enumerate(val):
     
         batch = obs_p.size(1)
-        obs_p = obs_p.to(device='cpu').double()
-        obs_s = obs_s.to(device='cpu').double()
-        obs_m = obs_m.to(device='cpu')
+        obs_p = obs_p.to(device=dev).double()
+        obs_s = obs_s.to(device=dev).double()
+        obs_m = obs_m.to(device=dev)
         
         with torch.no_grad():
     

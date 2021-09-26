@@ -11,6 +11,7 @@ import argparse
 def main(args):
     
     #############################loading the data#####################################
+    dev = 'cuda' if torch.cuda.is_available() else 'cpu'
     args.dtype = "train"
     train = DataLoader.data_loader(args)
     args.dtype = 'valid'
@@ -18,13 +19,10 @@ def main(args):
     ##################################################################################
     
     ##############################defining the model##################################
-    net_g = model.LSTM_g(embedding_dim=args.embedding_dim, h_dim=args.hidden_dim, dropout=args.dropout)
-    encoder = model.Encoder(pose_dim=args.pose_dim, h_dim=args.hidden_dim, latent_dim=args.latent_dim)
-    decoder = model.Decoder(pose_dim=args.pose_dim, h_dim=args.hidden_dim, latent_dim=args.latent_dim)
-    net_l = model.VAE(Encoder=encoder, Decoder=decoder)
-    if torch.cuda.is_available():
-        net_g.cuda()
-        net_l.cuda()
+    net_g = model.LSTM_g(embedding_dim=args.embedding_dim, h_dim=args.hidden_dim, dropout=args.dropout, dev=dev).to(device=dev)
+    encoder = model.Encoder(pose_dim=args.pose_dim, h_dim=args.hidden_dim, latent_dim=args.latent_dim, dev=dev)
+    decoder = model.Decoder(pose_dim=args.pose_dim, h_dim=args.hidden_dim, latent_dim=args.latent_dim, dev=dev)
+    net_l = model.VAE(Encoder=encoder, Decoder=decoder).to(device=dev)
     net_g.double()
     net_l.double()
     net_params = list(net_l.parameters()) + list(net_g.parameters())
@@ -56,12 +54,12 @@ def main(args):
     
             batch = obs_p.size(1)
             counter += batch      
-            obs_p = obs_p.to(device='cpu').double()
-            obs_s = obs_s.to(device='cpu').double()
-            target_p = target_p.to(device='cpu').double()
-            target_s = target_s.to(device='cpu').double()
-            obs_m = obs_m.to(device='cpu')
-            target_m = target_m.to(device='cpu')
+            obs_p = obs_p.to(device=dev).double()
+            obs_s = obs_s.to(device=dev).double()
+            target_p = target_p.to(device=dev).double()
+            target_s = target_s.to(device=dev).double()
+            obs_m = obs_m.to(device=dev)
+            target_m = target_m.to(device=dev)
     
             #########splitting the motion into local + global##########
             obs_s_g = 0.5*(obs_s.view(15, batch, 14, 2)[:,:,8] + obs_s.view(15, batch, 14, 2)[:,:,9])
@@ -120,12 +118,12 @@ def main(args):
     
             batch = obs_p.size(1)
             counter += batch   
-            obs_p = obs_p.to(device='cpu').double()
-            obs_s = obs_s.to(device='cpu').double()
-            target_p = target_p.to(device='cpu').double()
-            target_s = target_s.to(device='cpu').double()
-            obs_m = obs_m.to(device='cpu')
-            target_m = target_m.to(device='cpu')
+            obs_p = obs_p.to(device=dev).double()
+            obs_s = obs_s.to(device=dev).double()
+            target_p = target_p.to(device=dev).double()
+            target_s = target_s.to(device=dev).double()
+            obs_m = obs_m.to(device=dev)
+            target_m = target_m.to(device=dev)
     
             
             with torch.no_grad():

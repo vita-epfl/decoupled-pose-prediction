@@ -29,8 +29,9 @@ def FDE_c(pred, true):
 
 def speed2pos(preds, obs_p):
 
+    dev = 'cuda' if torch.cuda.is_available() else 'cpu'
     seq_len, batch, l = preds.shape
-    pred_pos = torch.zeros(seq_len, batch, l).to('cpu')
+    pred_pos = torch.zeros(seq_len, batch, l).to(device=dev)
     current = obs_p[-1,:,:].clone().detach()
     
     for i in range(seq_len):
