@@ -8,7 +8,7 @@ We propose to learn a representation that decouples the global and local pose fo
 Our forecasting model outperforms all existing methods on the pose forecasting benchmark to date by over 20%. The code will be made available online.
 
 ## Introduction:
-This is the official code for the paper ["Learning Decoupled Representation for Human Pose Forecasting"](link), accepted and published in ["ICCVW 2021"](https://somof.stanford.edu/workshops/iccv21)
+This is the official code for the paper ["Learning Decoupled Representation for Human Pose Forecasting"](https://openaccess.thecvf.com/content/ICCV2021W/SoMoF/html/Parsaeifard_Learning_Decoupled_Representations_for_Human_Pose_Forecasting_ICCVW_2021_paper.html), accepted and published in ["ICCVW 2021"](https://somof.stanford.edu/workshops/iccv21)
 
 ## Contents
 ------------
