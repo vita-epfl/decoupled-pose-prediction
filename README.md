@@ -122,3 +122,21 @@ where the options are similar to the training.
 ------------
   * Ubuntu 18.04, CUDA 10.1
  
+ 
+## Acknowledgments
+
+The base of the code is borrowed from [bounding box predictin](https://github.com/vita-epfl/bounding-box-prediction).
+
+### Citation
+
+```
+@InProceedings{parsaeifard2021decoupled,
+    author    = {Parsaeifard, Behnam and Saadatnejad, Saeed and Liu, Yuejiang and Mordan, Taylor and Alahi, Alexandre},
+    title     = {Learning Decoupled Representations for Human Pose Forecasting},
+    booktitle = {Proceedings of the IEEE/CVF International Conference on Computer Vision (ICCV) Workshops},
+    month     = {October},
+    year      = {2021},
+    pages     = {2294-2303}
+}
+
+```
