@@ -48,7 +48,7 @@ Here, you will find the [Poster](https://drive.google.com/file/d/1qcHiTlGGG8KNk6
 ## Proposed method DeRPoF
 -------------
 We decouple the pose forecasting into a global trajectory forecasting and a local pose forecasting as shown below:
-![Our proposed method](images/network.png)
+![Our proposed method](figures/network.png)
 
 -------------
 
